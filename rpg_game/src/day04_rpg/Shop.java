@@ -3,70 +3,43 @@ package day04_rpg;
 import java.util.ArrayList;
 
 public class Shop {
-	ArrayList<Item> itemList = new ArrayList<>();
+	public ArrayList<Item> itemList = new ArrayList<>();
 
 	public Shop() {
 		Item temp = new Item();
-		temp.kind = Item.WEAPON;
-		temp.name = "나무검";
-		temp.power = 3;
-		temp.price = 1000;
+		temp.setItem(Item.WEAPON, "나무검", 3, 1000);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.WEAPON;
-		temp.name = "철검";
-		temp.power = 5;
-		temp.price = 2000;
+		temp.setItem(Item.WEAPON, "철검", 5, 2000);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.WEAPON;
-		temp.name = "레이피어";
-		temp.power = 7;
-		temp.price = 2500;
+		temp.setItem(Item.WEAPON, "레이피어", 7, 2500);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.ARMOR;
-		temp.name = "티셔츠";
-		temp.power = 1;
-		temp.price = 300;
+		temp.setItem(Item.ARMOR, "티셔츠", 1, 300);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.ARMOR;
-		temp.name = "가죽갑옷";
-		temp.power = 4;
-		temp.price = 800;
+		temp.setItem(Item.ARMOR, "가죽갑옷", 4, 800);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.ARMOR;
-		temp.name = "강철갑옷";
-		temp.power = 7;
-		temp.price = 1500;
+		temp.setItem(Item.ARMOR, "강철갑옷", 7, 1500);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.RING;
-		temp.name = "은반지";
-		temp.power = 7;
-		temp.price = 3000;
+		temp.setItem(Item.RING, "은반지", 7, 3000);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.RING;
-		temp.name = "금반지";
-		temp.power = 17;
-		temp.price = 6000;
+		temp.setItem(Item.RING, "금반지", 17, 6000);
 		itemList.add(temp);
 
 		temp = new Item();
-		temp.kind = Item.RING;
-		temp.name = "다이아반지";
-		temp.power = 35;
-		temp.price = 20000;
+		temp.setItem(Item.RING, "다이아반지", 35, 20000);
 		itemList.add(temp);
 	}
 
@@ -92,12 +65,12 @@ public class Shop {
 					break;
 				int count = 0;
 				for (int i = 0; i < itemList.size(); i++) {
-					if (itemList.get(i).kind == selKind) {
+					if (itemList.get(i).getKind() == selKind) {
 						count += 1;
 						if (count == selNum) {
 							Player.inven.addItem(itemList.get(i));
-							Player.money -= itemList.get(i).price;
-							System.out.println("[" + itemList.get(i).name + "] 을 구입했습니다.");
+							Player.money -= itemList.get(i).getPrice();
+							System.out.println("[" + itemList.get(i).getName() + "] 을 구입했습니다.");
 							try {
 								Thread.sleep(1000);
 							} catch (InterruptedException e) {
@@ -114,12 +87,12 @@ public class Shop {
 	public void printItems(int kind) {
 		int count = 0;
 		for (int i = 0; i < itemList.size(); i++) {
-			if (itemList.get(i).kind != kind)
+			if (itemList.get(i).getKind() != kind)
 				continue;
 			System.out.print("[" + (count + 1) + "번]");
-			System.out.print("[이름 : " + itemList.get(i).name + "]");
-			System.out.print("[능력 : " + itemList.get(i).power + "]");
-			System.out.print("[가격 : " + itemList.get(i).price + "]");
+			System.out.print("[이름 : " + itemList.get(i).getName() + "]");
+			System.out.print("[능력 : " + itemList.get(i).getPower() + "]");
+			System.out.print("[가격 : " + itemList.get(i).getPrice() + "]");
 			System.out.println("");
 			count += 1;
 		}
