@@ -10,7 +10,7 @@ class MainGame {
 
 	public MainGame() {
 		Player player = new Player();
-		Dunjun mManager = new Dunjun();
+		Dunjeon mManager = new Dunjeon();
 		Shop shop = new Shop();
 		FileData fileData = new FileData();
 		while (true) {

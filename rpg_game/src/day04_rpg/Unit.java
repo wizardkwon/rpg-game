@@ -16,23 +16,44 @@ public class Unit {
 	public String getName() {
 		return this.name;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public int getLevel() {
 		return this.level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
 	}
 	public int getHp() {
 		return this.hp;
 	}
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
 	public int getMaxHp() {
 		return this.maxHp;
+	}
+	public void setMaxHp(int maxHp) {
+		this.maxHp = maxHp;
 	}
 	public int getAtt() {
 		return this.att;
 	}
+	public void setAtt(int att) {
+		this.att = att;
+	}
 	public int getDef() {
 		return this.def;
 	}
+	public void setDef(int def) {
+		this.def = def;
+	}
 	public int getExp() {
 		return this.exp;
+	}
+	public void setExp(int exp) {
+		this.exp = exp;
 	}
 	public boolean getParty() {
 		return this.party;
@@ -100,22 +121,22 @@ public class Unit {
 		System.out.print("[이름 : " + name + "]");
 		System.out.print(" [레벨 : " + level + "]");
 		if (ring != null) {
-			System.out.print(" [체력 : " + hp + " + " + ring.getPower());
+			System.out.print(" [체력 : " + (hp-ring.getPower()) + " + " + ring.getPower());
 		} else {
 			System.out.print(" [체력 : " + hp);
 		}
 		if (ring != null) {
-			System.out.println(" / " + maxHp + " + " + ring.getPower() + "]");
+			System.out.println(" / " + (maxHp-ring.getPower()) + " + " + ring.getPower() + "]");
 		} else {
 			System.out.println(" / " + maxHp + "]");
 		}
 		if (weapon != null) {
-			System.out.print("[공격력 : " + att + " + " + weapon.getPower() + "]");
+			System.out.print("[공격력 : " + (att-weapon.getPower()) + " + " + weapon.getPower() + "]");
 		} else {
 			System.out.print("[공격력 : " + att + "]");
 		}
 		if (armor != null) {
-			System.out.print(" [방어력 : " + def + " + " + armor.getPower() + "]");
+			System.out.print(" [방어력 : " + (def-armor.getPower()) + " + " + armor.getPower() + "]");
 		} else {
 			System.out.print(" [방어력 : " + def + "]");
 		}

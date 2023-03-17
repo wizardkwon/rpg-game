@@ -1,36 +1,21 @@
 package day04_rpg;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Guild {
+	public static Scanner scan = new Scanner(System.in);
+	public static Random ran = new Random();
 	private final int PARTY_SIZE = 4;
 	public ArrayList<Unit> guildList = new ArrayList<>();
 	private Unit[] partyList;
+	private int partyCount = 0;
 
 	public void setGuild() {
-		Unit temp = new Unit("호랑이", 1, 100, 10, 5, 0);
+		Unit temp = new Unit("권기철", 1, 100, 10, 5, 0);
 		guildList.add(temp);
-		temp = new Unit("강아지", 1, 80, 7, 3, 0);
-		guildList.add(temp);
-		temp = new Unit("사슴", 1, 50, 3, 1, 0);
-		guildList.add(temp);
-		temp = new Unit("두더지", 1, 70, 5, 2, 0);
-		guildList.add(temp);
-		temp = new Unit("돼지", 1, 200, 4, 8, 0);
-		guildList.add(temp);
-		temp = new Unit("사자", 1, 120, 11, 7, 0);
-		guildList.add(temp);
-		for (int i = 0; i < 4; i++) {
-			guildList.get(i).setParty(true);
-		}
-		partyList = new Unit[PARTY_SIZE];
-		int n = 0;
-		for (int i = 0; i < guildList.size(); i++) {
-			if (guildList.get(i).getParty() == true) {
-				partyList[n] = guildList.get(i);
-				n += 1;
-			}
-		}
+
 	}
 
 	public Unit getGuildUnit(int num) {
@@ -103,19 +88,23 @@ public class Guild {
 		printAllUnitStaus();
 		System.out.println("삭제할 번호를 입력하세요 ");
 		int sel = MainGame.scan.nextInt();
-		if (guildList.get(sel - 1).getParty()) {
-			System.out.println("파티중인 멤버는 삭제할수 없습니다.");
+		if (sel >= 0 && sel < this.guildList.size()) {
+			if (guildList.get(sel - 1).getParty()) {
+				System.out.println("파티중인 멤버는 삭제할수 없습니다.");
+			} else {
+				System.out.println("=================================");
+				System.out.print("[이름 : " + guildList.get(sel - 1).getName() + "]");
+				System.out.println("길드원을 삭제합니다.");
+				System.out.println("=================================");
+				guildList.remove(sel - 1);
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		} else {
-			System.out.println("=================================");
-			System.out.print("[이름 : " + guildList.get(sel - 1).getName() + "]");
-			System.out.println("길드원을 삭제합니다.");
-			System.out.println("=================================");
-			guildList.remove(sel - 1);
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("올바른 길드원을 선택하세요.");
 		}
 	}
 
@@ -144,8 +133,10 @@ public class Guild {
 		System.out.println("참가할 번호를 입력하세요 ");
 		int guildNum = MainGame.scan.nextInt();
 
-		partyList[partyNum - 1].setParty(false);;
-		guildList.get(guildNum - 1).setParty(true);;
+		partyList[partyNum - 1].setParty(false);
+		;
+		guildList.get(guildNum - 1).setParty(true);
+		;
 
 		System.out.println("====================================");
 		System.out.print("[이름 : " + partyList[partyNum - 1].getName() + "]");
@@ -168,10 +159,86 @@ public class Guild {
 		}
 	}
 
+	private void partyAdd() {
+		if (this.partyCount < 4) {
+			for (int i = 0; i < this.guildList.size(); i++) {
+				System.out.println((i + 1) + ". " + "Level: " + this.guildList.get(i).getLevel() + "/ 이름: "
+						+ this.guildList.get(i).getName() + "/ 체력: " + this.guildList.get(i).getMaxHp() + "/ 공격력: "
+						+ this.guildList.get(i).getAtt() + "/ 방어력: " + this.guildList.get(i).getDef());
+			}
+
+			int index = choiceUnit();
+			if (index >= 0 && index < this.guildList.size()) {
+				if (!guildList.get(index).getParty()) {
+					guildList.get(index).setParty(true);
+					this.partyCount++;
+				} else {
+					System.out.println("이미 파티에 참여중인 길드입니다.");
+				}
+
+				for (int i = 0; i < this.guildList.size(); i++) {
+					if (this.guildList.get(i).getParty()) {
+						System.out.println((i + 1) + ". level: " + this.guildList.get(i).getLevel() + " "
+								+ this.guildList.get(i).getName());
+					}
+				}
+				partyList = new Unit[PARTY_SIZE];
+				int n = 0;
+				for (int i = 0; i < this.partyCount; i++) {
+					if (guildList.get(i).getParty() == true) {
+						partyList[n] = guildList.get(i);
+						n += 1;
+					}
+				}
+			} else {
+				System.out.println("유닛 번호를 다시 확인하세요.");
+			}
+		} else {
+			System.out.println("파티원이 가득 찼습니다.");
+		}
+
+	}
+
+	private void partyDel() {
+		for (int i = 0; i < this.guildList.size(); i++) {
+			System.out.println((i + 1) + ". " + "Level: " + this.guildList.get(i).getLevel() + "/ 이름: "
+					+ this.guildList.get(i).getName() + "/ 체력: " + this.guildList.get(i).getMaxHp() + "/ 공격력: "
+					+ this.guildList.get(i).getAtt() + "/ 방어력: " + this.guildList.get(i).getDef());
+		}
+		int index = choiceUnit();
+		if (index >= 0 && index < this.guildList.size()) {
+			guildList.get(index).setParty(false);
+			this.partyCount--;
+		} else {
+			System.out.println("올바른 파티원을 선택하세요.");
+		}
+	}
+
+	private int choiceUnit() {
+		System.out.println("길드원을 선택하세요.");
+		int unitIndex = this.scan.nextInt() - 1;
+		return unitIndex;
+
+	}
+
+	private void partySort() {
+		String temp = "";
+		for (int i = 0; i < this.guildList.size(); i++) {
+			for (int j = 0; j < this.guildList.size(); j++) {
+				if (this.guildList.get(i).getName().compareTo(this.guildList.get(j).getName()) < 0) {
+					temp = this.guildList.get(i).getName();
+					this.guildList.get(i).setName(this.guildList.get(j).getName());
+					this.guildList.get(j).setName(temp);
+				}
+			}
+		}
+	}
+
 	public void guildMenu() {
 		while (true) {
 			System.out.println("=============== [길드관리] ================");
-			System.out.println("[1.길드목록] [2.길드원추가] [3.길드원삭제]\n" + "[4.파티원교체] [5.정렬]  [0.뒤로가기]");
+			System.out
+					.println("[1.길드목록] [2.길드원추가] [3.길드원삭제]\n" + "[4.파티원 추가] [5.파티원삭제] [6.파티원교체] [7.정렬]\n" + "[0.뒤로가기]");
 			int sel = MainGame.scan.nextInt();
 			if (sel == 1) {
 				printAllUnitStaus();
@@ -180,7 +247,13 @@ public class Guild {
 			} else if (sel == 3) {
 				removeUnit();
 			} else if (sel == 4) {
+				partyAdd();
+			} else if (sel == 5) {
+				partyDel();
+			} else if (sel == 6) {
 				partyChange();
+			} else if (sel == 7) {
+				partySort();
 			} else if (sel == 0) {
 				break;
 			}
