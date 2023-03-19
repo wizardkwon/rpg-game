@@ -10,11 +10,29 @@ public class Guild {
 	private final int PARTY_SIZE = 4;
 	public ArrayList<Unit> guildList = new ArrayList<>();
 	private Unit[] partyList;
-	private int partyCount = 0;
+	private int partyCount=0;
+	
+	public Guild(int partyCount) {
+		this.partyCount = partyCount;
+	}
+	public Guild() {
+	}
+	public int getPartyCount() {
+		return this.partyCount;
+	}
+	public void setPartyCount(int partyCount) {
+		this.partyCount = partyCount;
+	}
 
 	public void setGuild() {
-		Unit temp = new Unit("권기철", 1, 100, 10, 5, 0);
-		guildList.add(temp);
+		Unit temp1 = new Unit("권기철", 1, 100, 10, 5, 0);
+		Unit temp2 = new Unit("장영재", 1, 100, 10, 5, 0);
+		Unit temp3 = new Unit("임종현", 1, 100, 10, 5, 0);
+		Unit temp4 = new Unit("joker", 1, 100, 10, 5, 0);
+		guildList.add(temp1);
+		guildList.add(temp2);
+		guildList.add(temp3);
+		guildList.add(temp4);
 
 	}
 
@@ -164,7 +182,8 @@ public class Guild {
 			for (int i = 0; i < this.guildList.size(); i++) {
 				System.out.println((i + 1) + ". " + "Level: " + this.guildList.get(i).getLevel() + "/ 이름: "
 						+ this.guildList.get(i).getName() + "/ 체력: " + this.guildList.get(i).getMaxHp() + "/ 공격력: "
-						+ this.guildList.get(i).getAtt() + "/ 방어력: " + this.guildList.get(i).getDef());
+						+ this.guildList.get(i).getAtt() + "/ 방어력: " + this.guildList.get(i).getDef() + " 파티:"
+						+ this.guildList.get(i).getParty());
 			}
 
 			int index = choiceUnit();
@@ -175,7 +194,7 @@ public class Guild {
 				} else {
 					System.out.println("이미 파티에 참여중인 길드입니다.");
 				}
-
+				System.out.println("=====현재 파티원=====");
 				for (int i = 0; i < this.guildList.size(); i++) {
 					if (this.guildList.get(i).getParty()) {
 						System.out.println((i + 1) + ". level: " + this.guildList.get(i).getLevel() + " "
@@ -200,17 +219,24 @@ public class Guild {
 	}
 
 	private void partyDel() {
-		for (int i = 0; i < this.guildList.size(); i++) {
-			System.out.println((i + 1) + ". " + "Level: " + this.guildList.get(i).getLevel() + "/ 이름: "
-					+ this.guildList.get(i).getName() + "/ 체력: " + this.guildList.get(i).getMaxHp() + "/ 공격력: "
-					+ this.guildList.get(i).getAtt() + "/ 방어력: " + this.guildList.get(i).getDef());
-		}
-		int index = choiceUnit();
-		if (index >= 0 && index < this.guildList.size()) {
-			guildList.get(index).setParty(false);
-			this.partyCount--;
+		if (this.partyCount > 0) {
+
+			int index = choiceUnit();
+			if (index >= 0 && index < this.guildList.size()) {
+				guildList.get(index).setParty(false);
+				this.partyCount--;
+			} else {
+				System.out.println("올바른 파티원을 선택하세요.");
+			}
+			System.out.println("=====현재 파티원=====");
+			for (int i = 0; i < this.guildList.size(); i++) {
+				if (this.guildList.get(i).getParty()) {
+					System.out.println((i + 1) + ". level: " + this.guildList.get(i).getLevel() + " "
+							+ this.guildList.get(i).getName());
+				}
+			}
 		} else {
-			System.out.println("올바른 파티원을 선택하세요.");
+			System.out.println("참여한 파티원이 없습니다.");
 		}
 	}
 
