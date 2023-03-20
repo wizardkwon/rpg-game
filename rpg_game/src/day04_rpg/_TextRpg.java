@@ -16,7 +16,7 @@ class MainGame {
 		while (true) {
 			System.out.println("=============== [메인메뉴] ================");
 			System.out.println("[1.길드관리] [2.상점] [3.인벤토리] [4.던전]");
-			System.out.println("[5.저장] [6.로드] [0.종료]");
+			System.out.println("[5.저장] [6.로드1] [0.종료]");
 			int sel = scan.nextInt();
 			if (sel == 1) {
 				player.guildMenu();
