@@ -4,6 +4,7 @@ public class Item {
 	public static final int WEAPON = 1;
 	public static final int ARMOR = 2;
 	public static final int RING = 3;
+	public static final int POTION = 4;
 	private int kind;
 	private String name;
 	private int power;

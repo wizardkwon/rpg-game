@@ -11,6 +11,13 @@ public class Player {
 		money = 100000;
 		guild.setGuild();
 	}
+	
+//	public int getMoney() {
+//		return this.money;
+//	}
+//	public void setMoney(int money) {
+//		this.money = money;
+//	}
 
 	public void guildMenu() {
 		guild.guildMenu();

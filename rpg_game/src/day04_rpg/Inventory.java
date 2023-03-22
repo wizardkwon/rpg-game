@@ -30,7 +30,7 @@ public class Inventory {
 				Player.guild.printUnitStaus(selUnit - 1);
 				Player.guild.printUnitItem(selUnit - 1);
 				printItemList();
-				System.out.println("착용할 아이템 번호를 입력하세요 [0.뒤로가기]");
+				System.out.println("사용할 아이템 번호를 입력하세요 [0.뒤로가기]");
 				int selEquip = MainGame.scan.nextInt();
 				if (selEquip == 0)
 					break;
@@ -78,6 +78,12 @@ public class Inventory {
 								(itemList.get(selEquip).getPower() + player.getHp()));
 						Player.guild.guildList.get(selUnit - 1).setMaxHp(
 								(itemList.get(selEquip).getPower() + player.getMaxHp()));
+					}
+				}else if (itemList.get(selEquip).getKind() == Item.POTION) {
+					if(itemList.get(selEquip).getPower() + player.getHp() >player.getMaxHp() ) {
+						Player.guild.guildList.get(selUnit - 1).setHp(player.getMaxHp());
+					}else {
+						Player.guild.guildList.get(selUnit - 1).setHp(itemList.get(selEquip).getPower() + player.getHp());
 					}
 				}
 				itemList.remove(selEquip);

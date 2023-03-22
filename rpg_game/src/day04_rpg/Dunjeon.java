@@ -8,17 +8,18 @@ import java.util.Scanner;
 public class Dunjeon {
 	public static Scanner scan = new Scanner(System.in);
 	public static Random ran = new Random();
+	public static Inventory inven = new Inventory();
 
-//	private Guild guild = new Guild();
 	private int partySize;
-	private int monsterSize = 4;
+	private int monsterSize;
 	private String[] mName = { "스탈린", "히틀러", "오바마", "푸틴", "김정은", "김일성" };
-	private int[] mAtt = { 2, 5, 7, 10, 12, 15 };
+	private int[] mAtt = { 30, 25, 15, 15, 25, 30 };
 	private int[] mDef = { 1, 2, 3, 4, 10, 5 };
-	private int[] mHp = { 50, 60, 70, 30, 80, 100 };
+	private int[] mHp = { 50, 60, 70, 50, 80, 100 };
 	private static ArrayList<Monster> monsterList = new ArrayList<Monster>();
+	public ArrayList<Item> itemList = new ArrayList<>();
 
-	public ArrayList<Unit> guildList = new ArrayList<>();
+//	public ArrayList<Unit> guildList = new ArrayList<>();
 
 	public ArrayList<Monster> getMonsterList() {
 		return Dunjeon.monsterList;
@@ -29,7 +30,7 @@ public class Dunjeon {
 	}
 
 	public void init() {
-
+		this.monsterSize = 4;
 		int[] temp = new int[2];
 		boolean[] monCheck = new boolean[6];
 
@@ -48,9 +49,7 @@ public class Dunjeon {
 				Dunjeon.monsterList.add(monster);
 			}
 		}
-
 		figthRun();
-
 	}
 
 	private void printMonster() {
@@ -67,12 +66,14 @@ public class Dunjeon {
 		int count = 1;
 
 		System.out.println("==================파티원 목록=================");
+
 		for (int i = 0; i < Player.guild.guildList.size(); i++) {
-			if (Player.guild.guildList.get(i).getParty()) {
+			if (Player.guild.guildList.get(i).getParty() && Player.guild.guildList.get(i).getHp() > 0) {
 
 				System.out.println((count++) + ". " + Player.guild.guildList.get(i).getName() + " 체력 : "
 						+ Player.guild.guildList.get(i).getHp() + " [공격력 : " + Player.guild.guildList.get(i).getAtt()
-						+ "]" + " [방어력 : " + Player.guild.guildList.get(i).getDef() + "] 레벨: "+Player.guild.guildList.get(i).getLevel());
+						+ "]" + " [방어력 : " + Player.guild.guildList.get(i).getDef() + "] 레벨: "
+						+ Player.guild.guildList.get(i).getLevel());
 			}
 
 		}
@@ -93,105 +94,228 @@ public class Dunjeon {
 		for (int i = 0; i < Player.getGuildList().size(); i++) {
 			if (Player.getGuildList().get(i).getParty()) {
 				partySize++;
-				check = true;
-				System.out.println(check);
+				if (partySize == 4) {
+
+					check = true;
+				}
 			}
 		}
 
 		if (!check) {
-			System.out.println("파티원이 한명 이상이어야 던전에 입장할 수 있습니다.");
+			System.out.println("파티원이 4명이어야 합니다.");
 		}
+		
 		while (check) {
+			printMonster();
+			printPlayer();
 			for (int i = 0; i < Player.getGuildSize(); i++) {
-				printMonster();
-				printPlayer();
-
-				if (Player.getGuildList().get(i).getParty()) {
+				
+				if (Player.getGuildList().get(i).getParty() && Player.getGuildList().get(i).getHp() > 0) {
 					System.out.println("===========" + Player.getGuildList().get(i).getName() + "님 턴입니다===========");
 					System.out.println("공격할 몬스터를 선택하세요. (0)던전 나가기");
+					
+//					System.out.println(itemList.size());
+//					for(int t=0; t<itemList.size();t++) {
+//						if(itemList.get(i).getKind() == 4) {
+//							System.out.println((i+1)+"아이템: "+itemList.get(i).getName()+"효과: 체력"+itemList.get(i).getPower()+" UP");
+//							
+//						}
+//					}
 					int attNum = inputNumber();
-					if(attNum == -1) {
+					if(this.monsterSize > 0) {
+					System.out.println(Dunjeon.monsterList.get(attNum).getMonName()+" 체력 -"+Player.getGuildList().get(i).getAtt());
+					System.out.println(Dunjeon.monsterList.get(attNum).getMonName()+"의 남은 체력: "+(Dunjeon.monsterList.get(attNum).getMonHp()-Player.getGuildList().get(i).getAtt()));
+					System.out.println("===================================");
+					}
+					if (attNum == -1) {
 						System.out.println("던전을 포기합니다...");
 						check = false;
 					}
-				
+
 					for (int j = 0; j < this.monsterSize; j++) {
 						if (attNum == j) {
 							if ((Dunjeon.monsterList.get(j).getMonHp() - Player.getGuildList().get(i).getAtt()) < 1) {
 								System.out.println(Dunjeon.monsterList.get(j).getMonName() + " 처치 성공!!!!");
-								Player.getGuildList().get(i).setExp(Player.getGuildList().get(i).getExp()+100);
-							
-								if(Player.getGuildList().get(i).getExp() % 100 == 0) {
-									Player.getGuildList().get(i).setLevel(Player.getGuildList().get(i).getLevel()+1);
+								int ranMoneyDrop = ran.nextInt(2);
+								if(ranMoneyDrop == 1) {
+									int gold = ran.nextInt(2500)+500;
+									Player.money += gold;
+									System.out.println(Dunjeon.monsterList.get(j).getMonName()+"의 주머니에서 "+gold+"원 줍줍");
+									System.out.println("나의 골드: "+Player.money+"원");
+									
+									int item = ran.nextInt(3);
+								if(item == 0) {
+									int ranItemDrop = ran.nextInt(3)+1;
+									if(ranItemDrop == Item.WEAPON) {
+										int weaponNumber = ran.nextInt(3)+1;
+										if(weaponNumber == 0) {
+											Item temp = new Item();
+											temp.setItem(Item.WEAPON, "청룡언월도", 20, 5000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("청룡언월도를 획득하였습니다.");
+										}else if(weaponNumber == 1) {
+											Item temp = new Item();
+											temp.setItem(Item.WEAPON, "판테온의 창", 15, 3000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("판테온의 창을 획득하였습니다.");
+											
+										}else if(weaponNumber == 2) {
+											Item temp = new Item();
+											temp.setItem(Item.WEAPON, "왕초의 바가지", 25, 15000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("왕초의 바가지를 획득하였습니다.");
+										}
+											
+									}else if(ranItemDrop == Item.ARMOR) {
+										int weaponNumber = ran.nextInt(3);
+										if(weaponNumber == 0) {
+											Item temp = new Item();
+											temp.setItem(Item.ARMOR, "선조의 용포", 10, 4000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("선조의 용포를 획득하였습니다.");
+										}else if(weaponNumber == 1) {
+											Item temp = new Item();
+											temp.setItem(Item.ARMOR, "거지왕초의 누더기", 20, 10000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("거지왕초의 누더기를 획득하였습니다.");
+										}else if(weaponNumber == 2) {
+											Item temp = new Item();
+											temp.setItem(Item.ARMOR, "아기 저고리", 5, 3000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("아기 저고리를 획득하였습니다.");
+										}
+										
+									}else if(ranItemDrop == Item.RING) {
+										int weaponNumber = ran.nextInt(3);
+										if(weaponNumber == 0) {
+											Item temp = new Item();
+											temp.setItem(Item.RING, "옥 가락지", 10, 5000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("옥 가락지를 획득하였습니다.");
+										}else if(weaponNumber == 1) {
+											Item temp = new Item();
+											temp.setItem(Item.RING, "베토벤의 링", 15, 9000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("베토벤의 링을 획득하였습니다.");
+										}else if(weaponNumber == 2) {
+											Item temp = new Item();
+											temp.setItem(Item.RING, "금 가락지", 20, 10000);
+											itemList.add(temp);
+											Player.inven.addItem(itemList.get(itemList.size()-1));
+											System.out.println("금 가락지를 획득하였습니다.");
+										}
+									}
+								}
+								
+								}
+								Player.getGuildList().get(i).setExp(Player.getGuildList().get(i).getExp() + 100);
+
+								if (Player.getGuildList().get(i).getExp() % 100 == 0) {
+									Player.getGuildList().get(i).setLevel(Player.getGuildList().get(i).getLevel() + 1);
+									Player.getGuildList().get(i).setAtt(Player.getGuildList().get(i).getAtt()+5);
+									Player.getGuildList().get(i).setDef(Player.getGuildList().get(i).getDef()+3);
+									Player.getGuildList().get(i).setMaxHp(Player.getGuildList().get(i).getMaxHp()+10);
+									Player.getGuildList().get(i).setHp(Player.getGuildList().get(i).getMaxHp());
 								}
 								Dunjeon.monsterList.remove(j);
 								System.out.println("몬스터 숫자: " + this.monsterSize);
 								this.monsterSize--;
+								
 							} else {
 								Dunjeon.monsterList.get(j).setMonHp(
 										Dunjeon.monsterList.get(j).getMonHp() - Player.getGuildList().get(i).getAtt());
 							}
 						}
 					}
+					if (monsterDead == this.monsterSize) {
+						System.out.println("모든 몬스터 사냥에 성공하였습니다.  던전 클리어!!");
+						check = false;
+						break;
+					}
 				}
 
 			}
-			if(check) {
-			System.out.println("this.monsterSize: " + this.monsterSize);
-			for (int i = 0; i < this.monsterSize; i++) { // 몬스터가 죽었는데 사이즈가 줄지않아 인덱스 에러
+			if (check) {
+				System.out.println("this.monsterSize: " + this.monsterSize);
 				printMonster();
 				printPlayer();
-				System.out.println("=========== " + Dunjeon.monsterList.get(i).getMonName() + "의 공격이 시작됩니다. ===========");
-				int attNum = ran.nextInt(partySize);
-
-					if(i == 0) {System.out.println(Dunjeon.monsterList.get(i).getMonName()+": ★★에너르기 파★★ [후훗 맛좀 봐라!]");
-					}else if(i == 1) {
-						System.out.println(Dunjeon.monsterList.get(i).getMonName()+": ★★와카라디스★★ [이것도 막아낼 수 있을까?]");
-					}else if(i == 2) {
-						System.out.println(Dunjeon.monsterList.get(i).getMonName()+": ★★ICBM 발사!!★★ [모조리 죽여줄까?]");
-					}else if(i == 3) {
-						System.out.println(Dunjeon.monsterList.get(i).getMonName()+": ★★핵공격★★ [받으라우! 남조선 간나] ");
+				for (int i = 0; i < this.monsterSize; i++) { // 몬스터가 죽었는데 사이즈가 줄지않아 인덱스 에러
+					String monsterName = Dunjeon.monsterList.get(i).getMonName();
+					System.out.println("=========== " + monsterName + "의 공격이 시작됩니다. ===========");
+					int attNum = -1;
+					// 유닛의 회피를 위해
+					if(this.partySize > 2) {
+						attNum = ran.nextInt(4);
+					}else {
+						attNum = ran.nextInt(3);
 					}
-					System.out.println(Player.getGuildList().get(attNum).getName() +"님이 "+Dunjeon.monsterList.get(i).getMonName()+"의 공격을 받았습니다.");
-				
-					
-				for (int j = 0; j < partySize; j++) {
-					int critiNum = ran.nextInt(5);
-					critiNum = critiNum == 2 ? 2 : 1;
+					Unit unit = Player.getGuildList().get(attNum);
+					if (unit.getParty() && unit.getHp() > 0) {
 
-					if (attNum == j) {
+						if (i == 0) {
+							System.out.println(monsterName + ": ★★에너르기 파★★ [후훗 맛좀 봐라!]");
+						} else if (i == 1) {
+							System.out.println(monsterName + ": ★★와카라디스★★ [이것도 막아낼 수 있을까?]");
+						} else if (i == 2) {
+							System.out.println(monsterName + ": ★★ICBM 발사!!★★ [모조리 죽여줄까?]");
+						} else if (i == 3) {
+							System.out.println(monsterName + ": ★★핵공격★★ [받으라우! 남조선 간나] ");
+						}
+						System.out.println(unit.getName() + "님이 " + monsterName + "의 공격을 받았습니다.");
+
+						int critiNum = ran.nextInt(5);
+						critiNum = critiNum == 2 ? 2 : 1;
+
 						if (critiNum == 2) {
-							System.err.println(Dunjeon.monsterList.get(i).getMonName() + "의 ★★★크리티컬 히트★★★");
+							System.err.println(monsterName + "의 ★★★크리티컬 히트★★★");
 						}
-						System.err.println("데미지: "+Dunjeon.monsterList.get(i).getMonAtt() * critiNum );
-						
-						Player.getGuildUnit(j).setHp(Player.getGuildList().get(j).getHp()
-								- Dunjeon.monsterList.get(i).getMonAtt() * critiNum);
-						if (Player.getGuildUnit(j).getHp() < 1) {
-							System.out.println(Player.getGuildUnit(j).getName() + " 의 사망소식...");
+						System.err.println("데미지: " + Dunjeon.monsterList.get(i).getMonAtt() * critiNum);
+						if(unit.getDef() > 0) {
+							Player.getGuildUnit(attNum).setHp(unit.getHp()-(Dunjeon.monsterList.get(i).getMonAtt() * critiNum - 2));
+							Player.getGuildUnit(attNum).setDef(unit.getDef()-2);
+							if(	Player.getGuildUnit(attNum).getDef() < 0) {
+								Player.getGuildUnit(attNum).setDef(0);
+							}
+						}else {
+							Player.getGuildUnit(attNum).setHp(unit.getHp()- Dunjeon.monsterList.get(i).getMonAtt() * critiNum);
+						}
+						if (Player.getGuildUnit(attNum).getHp() < 1) {
+							System.out.println(Player.getGuildUnit(attNum).getName() + " 의 사망소식...");
+							Player.getGuildUnit(attNum).setHp(0);
 							partySize--;
+							
 						}
-					}
-					try {
 
-						Thread.sleep(650);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+						try {
+
+							Thread.sleep(650);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+					} else {
+						System.out.println(monsterName + "의 miss");
+						continue;
+					}
+					if (playerDead == partySize) {
+						System.out.println("모든 플레이어가 죽었습니다...던전 실패..");
+						check = false;
+						break;
 					}
 				}
+			}
+			
+			
+			
 
-			}
-		}
-			System.out.println("partySize : " + partySize);
-			if (playerDead == partySize) {
-				System.out.println("모든 플레이어가 죽었습니다...던전 실패..");
-				check = false;
-			}
-			if (monsterDead == this.monsterSize) {
-				System.out.println("모든 몬스터 사냥에 성공하였습니다.  던전 클리어!!");
-				check = false;
-			}
-		
 		}
 
 	}

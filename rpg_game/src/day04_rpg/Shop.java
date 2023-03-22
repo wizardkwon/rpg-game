@@ -41,12 +41,22 @@ public class Shop {
 		temp = new Item();
 		temp.setItem(Item.RING, "다이아반지", 35, 20000);
 		itemList.add(temp);
+		
+		temp = new Item();
+		temp.setItem(Item.POTION , "기초 영약", 50, 500);
+		itemList.add(temp);
+		temp = new Item();
+		temp.setItem(Item.POTION , "신비의 영약", 100, 900);
+		itemList.add(temp);
+		temp = new Item();
+		temp.setItem(Item.POTION , "초월의 영약", 1000, 1000);
+		itemList.add(temp);
 	}
 
 	public void shopMng() {
 		while (true) {
 			System.out.println("=============== [상점] ===============");
-			System.out.println("[1.무기] [2.갑옷] [3.반지] [0.뒤로가기]");
+			System.out.println("[1.무기] [2.갑옷] [3.반지] [4.물약] [0.뒤로가기]");
 			int selKind = MainGame.scan.nextInt();
 			if (selKind == 0)
 				return;
@@ -57,6 +67,8 @@ public class Shop {
 					System.out.println("=========== [방어구] ============");
 				else if (selKind == Item.RING)
 					System.out.println("=========== [반지] ============");
+				else if (selKind == Item.POTION)
+					System.out.println("=========== [물약] ============");
 				printItems(selKind);
 				System.out.println("[골드 : " + Player.money + "]");
 				System.out.println("구입할 아이템 번호를 입력하세요 [0.뒤로가기]");

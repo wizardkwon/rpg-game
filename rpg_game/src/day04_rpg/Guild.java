@@ -23,9 +23,15 @@ public class Guild {
 	public void setPartyCount(int partyCount) {
 		this.partyCount = partyCount;
 	}
+	public Unit[] getPartyList() {
+		return this.partyList;
+	}
+	public void setPartyList(Unit[] partyList) {
+		this.partyList = partyList;
+	}
 
 	public void setGuild() {
-		Unit temp1 = new Unit("권기철", 1, 100, 10, 5, 0);
+		Unit temp1 = new Unit("권기철", 1, 100, 10, 50, 0);
 		Unit temp2 = new Unit("장영재", 1, 100, 10, 5, 0);
 		Unit temp3 = new Unit("임종현", 1, 100, 10, 5, 0);
 		Unit temp4 = new Unit("joker", 1, 100, 10, 5, 0);
@@ -33,6 +39,12 @@ public class Guild {
 		guildList.add(temp2);
 		guildList.add(temp3);
 		guildList.add(temp4);
+		int index = 0;
+		for(int i=0; i<PARTY_SIZE;i++) {
+			guildList.get(index++).setParty(true);
+			this.partyCount++;
+			
+		}
 
 	}
 
@@ -152,9 +164,9 @@ public class Guild {
 		int guildNum = MainGame.scan.nextInt();
 
 		partyList[partyNum - 1].setParty(false);
-		;
+		
 		guildList.get(guildNum - 1).setParty(true);
-		;
+		
 
 		System.out.println("====================================");
 		System.out.print("[이름 : " + partyList[partyNum - 1].getName() + "]");
@@ -201,7 +213,7 @@ public class Guild {
 								+ this.guildList.get(i).getName());
 					}
 				}
-				partyList = new Unit[PARTY_SIZE];
+				partyList = new Unit[4];
 				int n = 0;
 				for (int i = 0; i < this.partyCount; i++) {
 					if (guildList.get(i).getParty() == true) {
@@ -209,6 +221,7 @@ public class Guild {
 						n += 1;
 					}
 				}
+				System.out.println("asdasdasd: "+partyList.length);
 			} else {
 				System.out.println("유닛 번호를 다시 확인하세요.");
 			}
@@ -220,6 +233,13 @@ public class Guild {
 
 	private void partyDel() {
 		if (this.partyCount > 0) {
+			System.out.println("=====현재 파티원=====");
+			for (int i = 0; i < this.guildList.size(); i++) {
+				if (this.guildList.get(i).getParty()) {
+					System.out.println((i + 1) + ". level: " + this.guildList.get(i).getLevel() + " "
+							+ this.guildList.get(i).getName());
+				}
+			}
 
 			int index = choiceUnit();
 			if (index >= 0 && index < this.guildList.size()) {
@@ -228,13 +248,7 @@ public class Guild {
 			} else {
 				System.out.println("올바른 파티원을 선택하세요.");
 			}
-			System.out.println("=====현재 파티원=====");
-			for (int i = 0; i < this.guildList.size(); i++) {
-				if (this.guildList.get(i).getParty()) {
-					System.out.println((i + 1) + ". level: " + this.guildList.get(i).getLevel() + " "
-							+ this.guildList.get(i).getName());
-				}
-			}
+			
 		} else {
 			System.out.println("참여한 파티원이 없습니다.");
 		}
