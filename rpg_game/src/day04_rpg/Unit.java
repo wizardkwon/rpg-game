@@ -8,6 +8,7 @@ public class Unit {
 	private int att;
 	private int def;
 	private int exp;
+	private int maxExp;
 	private boolean party;
 	private Item weapon;
 	private Item armor;
@@ -55,6 +56,12 @@ public class Unit {
 	public void setExp(int exp) {
 		this.exp = exp;
 	}
+	public int getMaxExp() {
+		return this.maxExp;
+	}
+	public void setMaxExp(int maxExp) {
+		this.maxExp = maxExp;
+	}
 	public boolean getParty() {
 		return this.party;
 	}
@@ -83,13 +90,14 @@ public class Unit {
 	
 	
 
-	public Unit(String n, int l, int h, int a, int d, int e) {
+	public Unit(String n, int l, int h, int a, int d, int e, int m) {
 		name = n;
 		level = l;
 		maxHp = h;
 		att = a;
 		def = d;
 		exp = e;
+		maxExp = m;
 		hp = maxHp;
 		party = false;
 		weapon = null;
@@ -97,13 +105,14 @@ public class Unit {
 		ring = null;
 	}
 
-	public Unit(String n, int l, int h, int a, int d, int e, boolean p) {
+	public Unit(String n, int l, int h, int a, int d, int e,int m, boolean p) {
 		name = n;
 		level = l;
 		maxHp = h;
 		att = a;
 		def = d;
 		exp = e;
+		maxExp = m;
 		hp = maxHp;
 		party = p;
 		weapon = null;

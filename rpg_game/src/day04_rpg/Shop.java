@@ -49,7 +49,10 @@ public class Shop {
 		temp.setItem(Item.POTION , "신비의 영약", 100, 900);
 		itemList.add(temp);
 		temp = new Item();
-		temp.setItem(Item.POTION , "초월의 영약", 1000, 1000);
+		temp.setItem(Item.POTION , "초월의 영약", 300, 1000);
+		itemList.add(temp);
+		temp = new Item();
+		temp.setItem(Item.POTION , "생명의 영약", 99999, 10000);
 		itemList.add(temp);
 	}
 

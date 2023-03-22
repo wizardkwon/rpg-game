@@ -128,8 +128,9 @@ public class FileData {
 				int att = Integer.parseInt(unitArr[3]);
 				int def = Integer.parseInt(unitArr[4]);
 				int exp = Integer.parseInt(unitArr[5]);
-				boolean party = Boolean.parseBoolean(unitArr[6]);
-				Unit temp = new Unit(name, level, maxhp, att, def, exp, party);
+				int maxExp = Integer.parseInt(unitArr[6]);
+				boolean party = Boolean.parseBoolean(unitArr[7]);
+				Unit temp = new Unit(name, level, maxhp, att, def, exp,maxExp, party);
 				Player.guild.guildList.add(temp);
 				// ==================== item =======================
 				String itemData = br.readLine();

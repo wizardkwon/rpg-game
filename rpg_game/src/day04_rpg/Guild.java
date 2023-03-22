@@ -31,10 +31,10 @@ public class Guild {
 	}
 
 	public void setGuild() {
-		Unit temp1 = new Unit("권기철", 1, 100, 10, 50, 0);
-		Unit temp2 = new Unit("장영재", 1, 100, 10, 5, 0);
-		Unit temp3 = new Unit("임종현", 1, 100, 10, 5, 0);
-		Unit temp4 = new Unit("joker", 1, 100, 10, 5, 0);
+		Unit temp1 = new Unit("권기철", 1, 100, 10, 50, 0 , 100);
+		Unit temp2 = new Unit("장영재", 1, 100, 10, 5, 0, 100);
+		Unit temp3 = new Unit("임종현", 1, 100, 10, 5, 0, 100);
+		Unit temp4 = new Unit("joker", 1, 100, 10, 5, 0, 100);
 		guildList.add(temp1);
 		guildList.add(temp2);
 		guildList.add(temp3);
@@ -92,7 +92,7 @@ public class Guild {
 		int hp = ran * 11;
 		int att = ran + 1;
 		int def = ran / 2 + 1;
-		Unit temp = new Unit(name, 1, hp, att, def, 0);
+		Unit temp = new Unit(name, 1, hp, att, def, 0, 100);
 
 		System.out.println("=====================================");
 		System.out.print("[이름 : " + name + "]");
@@ -101,6 +101,7 @@ public class Guild {
 		System.out.println(" / " + hp + "]");
 		System.out.print("[공격력 : " + att + "]");
 		System.out.println(" [방어력 : " + def + "]");
+		System.out.println(" [경험치 : " + 0 + "]");
 		System.out.println("길드원을 추가합니다.");
 		System.out.println("=====================================");
 
