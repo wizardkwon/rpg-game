@@ -24,10 +24,7 @@ public class Dunjeon {
 	private int tempDunLv = MainGame.getDunjeonLevel();
 	private int partySize;
 	private int monsterSize;
-//	private String[] mName = { "스탈린", "히틀러", "오바마", "푸틴", "김정은", "김일성" };
-//	private int[] mAtt = { 20, 20, 15, 15, 20, 20 };
-//	private int[] mDef = { 1, 2, 3, 4, 10, 5 };
-//	private int[] mHp = { 50, 60, 60, 50, 70, 80 };
+
 	private String[] mName;
 	private int[] mAtt;
 	private int[] mDef;
