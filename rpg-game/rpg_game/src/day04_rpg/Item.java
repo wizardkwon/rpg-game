@@ -9,7 +9,7 @@ public class Item {
 	private String name;
 	private int power;
 	private int price;
-	
+	 
 	public int getKind() {
 		return this.kind;
 	}

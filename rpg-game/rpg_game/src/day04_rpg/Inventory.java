@@ -20,7 +20,7 @@ public class Inventory {
 			}
 		}
 	}
-
+ 
 	public void equipMenu() {
 		Player.guild.printAllUnitStaus();
 		System.out.println("아이템 착용할 길드원을 선택하세요 ");

@@ -19,7 +19,7 @@ public class Dunjeon {
 	public void setMonsterList(ArrayList<Monster> monsterList) {
 		Dunjeon.monsterList = monsterList;
 	}
-
+  
 	private int dunjeonLv = 1;
 	private int tempDunLv = MainGame.getDunjeonLevel();
 	private int partySize;

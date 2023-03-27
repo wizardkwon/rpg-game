@@ -11,7 +11,7 @@ public class FileData {
 	void save() throws IOException {
 		FileWriter fout = null;
 		String path = "gameData.txt";
-
+ 
 		fout = new FileWriter(path);
 		ArrayList<Unit> temp = Player.getGuildList();
 		String gameData = "";

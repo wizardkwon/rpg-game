@@ -13,7 +13,7 @@ public class Unit {
 	private Item weapon;
 	private Item armor;
 	private Item ring;
-	
+	 
 	public String getName() {
 		return this.name;
 	}

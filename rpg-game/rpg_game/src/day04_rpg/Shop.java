@@ -9,7 +9,7 @@ public class Shop {
 		Item temp = new Item();
 		temp.setItem(Item.WEAPON, "나무검", 3, 1000);
 		itemList.add(temp);
-
+ 
 		temp = new Item();
 		temp.setItem(Item.WEAPON, "철검", 5, 2000);
 		itemList.add(temp);
