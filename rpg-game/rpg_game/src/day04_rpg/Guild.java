@@ -11,7 +11,7 @@ public class Guild {
 	public ArrayList<Unit> guildList = new ArrayList<>();
 	private Unit[] partyList;
 	private int partyCount=0;
-	 
+	
 	public Guild(int partyCount) {
 		this.partyCount = partyCount;
 	}

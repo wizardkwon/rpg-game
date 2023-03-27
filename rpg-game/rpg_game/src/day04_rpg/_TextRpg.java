@@ -8,7 +8,7 @@ class MainGame {
 	 public static Scanner scan = new Scanner(System.in);
 	 public static Random ran = new Random();
 	 
-	  
+	 
 	 public static int getDunjeonLevel() {
 		 int dunjeonLevel = 1;
 		 

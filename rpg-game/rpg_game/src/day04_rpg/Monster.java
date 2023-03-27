@@ -10,7 +10,7 @@ public class Monster {
 		this.monName = monName;
 		this.monAtt = monAtt;
 		this.monDef = monDef;
-		 
+		
 		this.monHp = monHp;
 	}
 	public String getMonName() {
