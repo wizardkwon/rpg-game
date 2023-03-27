@@ -24,7 +24,7 @@ public class Dunjeon {
 	private int tempDunLv = MainGame.getDunjeonLevel();
 	private int partySize;
 	private int monsterSize;
-
+	
 	private String[] mName;
 	private int[] mAtt;
 	private int[] mDef;
