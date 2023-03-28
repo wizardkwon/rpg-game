@@ -8,10 +8,12 @@ import java.util.Scanner;
 public class Dunjeon {
 	public static Scanner scan = new Scanner(System.in);
 	public static Random ran = new Random();
+	
 	public static Inventory inven = new Inventory();
 	private static ArrayList<Monster> monsterList = new ArrayList<Monster>();
 	public ArrayList<Item> itemList = new ArrayList<>();
 
+	
 	public ArrayList<Monster> getMonsterList() {
 		return Dunjeon.monsterList;
 	}
@@ -24,35 +26,41 @@ public class Dunjeon {
 	private int tempDunLv = MainGame.getDunjeonLevel();
 	private int partySize;
 	private int monsterSize;
-	
+	private boolean clearCheck[] = new boolean[4];
+	private int count = 0;
+	private int sel = -1;
 	private String[] mName;
 	private int[] mAtt;
 	private int[] mDef;
 	private int[] mHp;
 	public void init() {
-		System.out.println("1. 크로메데우스의 던전 (추천 레벨: 1~5) ");
-		System.out.println("2. 야생의 숲 (추천 레벨: 5~10)");
-		System.out.println("3. 우미관 (추천 레벨: 7~15)");
-		System.out.println("4. 지구 (추천 레벨: 15~20)");
-		int sel = scan.nextInt();
+		clearCheck[0] = true;
+		System.out.println("==============던전 LEVEL : "+this.dunjeonLv+"============");
+		System.out.println("1. 크로메데우스의 던전 (추천 레벨: 1~5) [" +clearCheck[0]+"]");
+		System.out.println("2. 야생의 숲 (추천 레벨: 5~10) [" +clearCheck[1]+"]");
+		System.out.println("3. 우미관 (추천 레벨: 7~15) ["+clearCheck[2]+"]");
+		System.out.println("4. 지구 (추천 레벨: 15~20) ["+clearCheck[3]+"]");
+	
+		this.sel = scan.nextInt();
+		if(clearCheck[sel-1]) {
 		if(sel == 1) {
 			 this.mName = new String[]{ "타락 성직자", "유혹의 마법사", "동굴 사냥꾼", "동굴 관리자", "동굴 일꾼", "신전 문지기" };
-			 this.mAtt = new int[]{ 20, 20, 15, 15, 20, 20 };
-			 this.mDef = new int[]{ 1, 2, 3, 4, 10, 5 };
-			 this.mHp = new int[]{ 50, 60, 60, 50, 70, 80 };
-		}else if(sel == 2) {
+			 this.mAtt = new int[]{ 17, 17, 12, 12, 17, 17 };
+			 this.mDef = new int[]{ 1, 2, 3, 4, 5, 5 };
+			 this.mHp = new int[]{ 30, 40, 40, 30, 50, 60 };
+		}else if(sel == 2 && clearCheck[1]) {
 			this.mName = new String[]{ "포악한 토끼", "상냥한 코끼리", "늙은 호랑이", "얼음 늑대", "비정한 유니콘", "날쌘 표범" };
 			 this.mAtt = new int[]{ 20, 20, 15, 15, 20, 20 };
-			 this.mDef = new int[]{ 1, 2, 3, 4, 10, 5 };
-			 this.mHp = new int[]{ 50, 60, 60, 50, 70, 80 };
-		}else if(sel == 3) {
+			 this.mDef = new int[]{ 2, 3, 3, 4, 8, 4 };
+			 this.mHp = new int[]{ 50, 60, 60, 50, 60, 70 };
+		}else if(sel == 3 && clearCheck[2]) {
 			this.mName = new String[]{ "삼수", "개코", "번개", "구마적", "문영철", "김무옥" };
-			 this.mAtt = new int[]{ 20, 20, 15, 15, 20, 20 };
-			 this.mDef = new int[]{ 1, 2, 3, 4, 10, 5 };
-			 this.mHp = new int[]{ 50, 60, 60, 50, 70, 80 };
-		}else if(sel == 4) {
+			 this.mAtt = new int[]{ 22, 22, 17, 27, 24, 24 };
+			 this.mDef = new int[]{ 2, 2, 3, 10, 2, 5 };
+			 this.mHp = new int[]{ 50, 60, 60, 80, 70, 80 };
+		}else if(sel == 4 && clearCheck[3]) {
 			this.mName = new String[]{ "스탈린", "히틀러", "오바마", "푸틴", "김정은", "김일성" };
-			 this.mAtt = new int[]{ 20, 20, 15, 15, 20, 20 };
+			 this.mAtt = new int[]{ 25, 25, 20, 20, 20, 25 };
 			 this.mDef = new int[]{ 1, 2, 3, 4, 10, 5 };
 			 this.mHp = new int[]{ 50, 60, 60, 50, 70, 80 };
 		}
@@ -75,7 +83,8 @@ public class Dunjeon {
 				Dunjeon.monsterList.add(monster);
 			}
 		}
-		
+		System.out.println("dunjeonLv: "+ dunjeonLv);
+		System.out.println("tempDunLv: "+ tempDunLv);
 		if (this.tempDunLv == this.dunjeonLv) {
 			for (int i = 0; i < Dunjeon.monsterList.size(); i++) {
 				Dunjeon.monsterList.get(i).setMonAtt(Dunjeon.monsterList.get(i).getMonAtt() + (this.tempDunLv * 3));
@@ -85,6 +94,9 @@ public class Dunjeon {
 			}
 		}
 		figthRun();
+	}else {
+		System.out.println("이전 던전을 클리어해야 입장할 수 있습니다.");
+	}
 	}
 
 	private void printMonster() {
@@ -144,22 +156,63 @@ public class Dunjeon {
 			printPlayer();
 			ArrayList<Monster> monster = Dunjeon.monsterList;
 			for (int i = 0; i < Player.getGuildSize(); i++) {
-
-				if (Player.getGuildList().get(i).getParty() && Player.getGuildList().get(i).getHp() > 0) {
+				
+				Unit fightPlayer = Player.getGuildList().get(i);
+				ArrayList<Item> invenItem = Player.inven.itemList;
+				
+				if (fightPlayer.getParty() && fightPlayer.getHp() > 0) {
 					System.out.println(
-							"■■■■■■■■■■■■■■■ " + Player.getGuildList().get(i).getName() + "님 전투시작 ■■■■■■■■■■■■■■■■");
-					System.out.println("공격할 몬스터를 선택하세요. (0)던전 나가기");
-
+							"■■■■■■■■■■■■■■■ " + fightPlayer.getName() + "님 전투시작 ■■■■■■■■■■■■■■■■");
+					System.out.println("공격할 몬스터를 선택하세요. (0)던전 나가기 (9)물약사용");
+					
 					int attNum = inputNumber();
+					if(attNum == 8) {
+						for(int z=0; z < invenItem.size();z++) {
+							System.out.println("num: "+invenItem.get(z).getKind() );
+							
+							if(invenItem.get(z).getKind() == Item.POTION) {
+								System.out.print("물약");
+								count++;
+							}
+						}
+						System.out.println("count: "+count);
+						if(count > 0) {
+							for(int z=0; z < invenItem.size();z++) {
+								if(invenItem.get(z).getKind() == Item.POTION) {
+									System.out.print("[" + (z + 1) + "번]");
+									System.out.print("[이름 : " + invenItem.get(z).getName() + "]");
+									System.out.print("[능력 : " + invenItem.get(z).getPower() + "]");
+									System.out.println("");
+								}
+							}
+							System.out.print("사용할 포션 번호: ");
+							int usePotion = scan.nextInt()-1;
+							if (invenItem.get(usePotion).getKind() == Item.POTION) {
+								System.out.println("포션사용");
+								if (invenItem.get(usePotion).getPower() + fightPlayer.getHp() > fightPlayer.getMaxHp()) {
+									fightPlayer.setHp(fightPlayer.getMaxHp());
+								} else {
+									fightPlayer.setHp(invenItem.get(usePotion).getPower() + fightPlayer.getHp());
+								}
+								invenItem.remove(usePotion);
+								count--;
+							}
+						}else{
+							System.out.println("물약이 없습니다..");
+							i--;
+						}
+						
+					}else {
+						
 					if (this.monsterSize <= attNum) {
 						System.out.println("몬스터가 없습니다.");
 						continue;
 					}
 					if (attNum != -1) {
 						System.out.println(
-								Player.getGuildList().get(i).getName()+": 받아라!! ["+monster.get(attNum).getMonName() + " 체력 -" + Player.getGuildList().get(i).getAtt()+"]");
+								fightPlayer.getName()+": 받아라!! ["+monster.get(attNum).getMonName() + " 체력 -" +fightPlayer.getAtt()+"]");
 						System.out.println(monster.get(attNum).getMonName() + "의 남은 체력: "
-								+ (monster.get(attNum).getMonHp() - Player.getGuildList().get(i).getAtt()));
+								+ (monster.get(attNum).getMonHp() - fightPlayer.getAtt()));
 						System.out.println("■■■■■■■■■■■■■■■■■■■ 전투종료 ■■■■■■■■■■■■■■■■■■■");
 					}
 					if (attNum == -1) {
@@ -170,7 +223,7 @@ public class Dunjeon {
 
 					for (int j = 0; j < this.monsterSize; j++) {
 						if (attNum == j) {
-							if ((monster.get(j).getMonHp() - Player.getGuildList().get(i).getAtt()) < 1) {
+							if ((monster.get(j).getMonHp() - fightPlayer.getAtt()) < 1) {
 								System.out.println(monster.get(j).getMonName() + " 처치 성공!!!!");
 								int ranMoneyDrop = ran.nextInt(2);
 								if (ranMoneyDrop == 1) {
@@ -178,12 +231,13 @@ public class Dunjeon {
 									Player.money += gold;
 									System.out.println(monster.get(j).getMonName() + "의 주머니에서 " + gold + "원 줍줍");
 									System.out.println("나의 골드: " + Player.money + "원");
-
-									int item = ran.nextInt(5);
+								}
+									int item = ran.nextInt(2);
 									if (item == 0) {
-										int ranItemDrop = ran.nextInt(3) + 1;
+										int ranItemDrop = ran.nextInt(5) + 1;
+										ranItemDrop = ranItemDrop == 5 ? 4 : 4;
 										if (ranItemDrop == Item.WEAPON) {
-											int weaponNumber = ran.nextInt(3) + 1;
+											int weaponNumber = ran.nextInt(5) + 1;
 											if (weaponNumber == 0) {
 												Item temp = new Item();
 												temp.setItem(Item.WEAPON, "청룡언월도", 20, 5000);
@@ -206,7 +260,7 @@ public class Dunjeon {
 											}
 
 										} else if (ranItemDrop == Item.ARMOR) {
-											int weaponNumber = ran.nextInt(3);
+											int weaponNumber = ran.nextInt(5);
 											if (weaponNumber == 0) {
 												Item temp = new Item();
 												temp.setItem(Item.ARMOR, "선조의 용포", 10, 4000);
@@ -228,7 +282,7 @@ public class Dunjeon {
 											}
 
 										} else if (ranItemDrop == Item.RING) {
-											int weaponNumber = ran.nextInt(3);
+											int weaponNumber = ran.nextInt(4);
 											if (weaponNumber == 0) {
 												Item temp = new Item();
 												temp.setItem(Item.RING, "옥 가락지", 10, 5000);
@@ -248,23 +302,44 @@ public class Dunjeon {
 												Player.inven.addItem(itemList.get(itemList.size() - 1));
 												System.out.println("금 가락지를 획득하였습니다.");
 											}
+										}else if (ranItemDrop == Item.POTION) {
+											int potion = ran.nextInt(3);
+											if (potion == 0) {
+												Item temp = new Item();
+												temp.setItem(Item.POTION, "신비의 영약", 100, 900);
+												itemList.add(temp);
+												Player.inven.addItem(itemList.get(itemList.size() - 1));
+												System.out.println("신비의 영약을 획득하였습니다.");
+											} else if (potion == 1) {
+												Item temp = new Item();
+												temp.setItem(Item.POTION, "초월의 영약", 300, 1000);
+												itemList.add(temp);
+												Player.inven.addItem(itemList.get(itemList.size() - 1));
+												System.out.println("초월의 영약을 획득하였습니다.");
+											} else if (potion == 2) {
+												Item temp = new Item();
+												temp.setItem(Item.POTION, "기초의 영약", 50, 5);
+												itemList.add(temp);
+												Player.inven.addItem(itemList.get(itemList.size() - 1));
+												System.out.println("생명의 영약을 획득하였습니다.");
+											}
 										}
 									}
 
-								}
+								
 								int plusExp = this.dunjeonLv * 10 + 50;
 								int plusMaxExp = this.dunjeonLv * 2;
-								Unit guildPlayer = Player.getGuildList().get(i);
-								guildPlayer.setExp(Player.getGuildList().get(i).getExp() + plusExp);
+								
+								fightPlayer.setExp(Player.getGuildList().get(i).getExp() + plusExp);
 
-								if (guildPlayer.getExp() >= guildPlayer.getMaxExp()) {
-									guildPlayer.setLevel(guildPlayer.getLevel() + 1);
-									guildPlayer.setAtt(guildPlayer.getAtt() + 5);
-									guildPlayer.setDef(guildPlayer.getDef() + 3);
-									guildPlayer.setMaxHp(guildPlayer.getMaxHp() + 10);
-									guildPlayer.setHp(guildPlayer.getMaxHp());
-									guildPlayer.setExp(guildPlayer.getExp() - guildPlayer.getMaxExp());
-									guildPlayer.setMaxExp(guildPlayer.getMaxExp() * plusMaxExp);
+								if (fightPlayer.getExp() >= fightPlayer.getMaxExp()) {
+									fightPlayer.setLevel(fightPlayer.getLevel() + 1);
+									fightPlayer.setAtt(fightPlayer.getAtt() + 5);
+									fightPlayer.setDef(fightPlayer.getDef() + 3);
+									fightPlayer.setMaxHp(fightPlayer.getMaxHp() + 10);
+									fightPlayer.setHp(fightPlayer.getMaxHp());
+									fightPlayer.setExp(fightPlayer.getExp() - fightPlayer.getMaxExp());
+									fightPlayer.setMaxExp(fightPlayer.getMaxExp() * plusMaxExp);
 								}
 								monster.remove(j);
 								System.out.println("몬스터 숫자: " + this.monsterSize);
@@ -272,14 +347,29 @@ public class Dunjeon {
 
 							} else {
 								monster.get(j)
-										.setMonHp(monster.get(j).getMonHp() - Player.getGuildList().get(i).getAtt());
+										.setMonHp(monster.get(j).getMonHp() - fightPlayer.getAtt());
 							}
 						}
 					}
+				}
+					
 					if (monsterDead == this.monsterSize) {
-						this.dunjeonLv++;
-						this.tempDunLv = this.dunjeonLv;
-
+						int ch = 0;
+						for(int z=0; z<clearCheck.length;z++) {
+							if(clearCheck[z] == true) {
+								ch++;
+							}
+						}
+						if(ch == 4) {
+							this.dunjeonLv++;
+							this.tempDunLv = this.dunjeonLv; // 던전 등급 올라갈수록 몬스터 능력 향상
+							clearCheck[1] = false;
+							clearCheck[2] = false;
+							clearCheck[3] = false;
+						}
+						if(this.sel != 4) {
+						clearCheck[this.sel] = true;
+						}
 						System.out.println("모든 몬스터 사냥에 성공하였습니다.  던전 클리어!!");
 						check = false;
 						break;

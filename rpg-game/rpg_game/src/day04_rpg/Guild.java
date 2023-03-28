@@ -31,10 +31,10 @@ public class Guild {
 	}
 
 	public void setGuild() {
-		Unit temp1 = new Unit("권기철", 1, 100, 10, 50, 0 , 100);
-		Unit temp2 = new Unit("장영재", 1, 100, 10, 5, 0, 100);
-		Unit temp3 = new Unit("임종현", 1, 100, 10, 5, 0, 100);
-		Unit temp4 = new Unit("joker", 1, 100, 10, 5, 0, 100);
+		Unit temp1 = new Unit("권기철", 1, 100, 20, 50, 0 , 100);
+		Unit temp2 = new Unit("장영재", 1, 100, 20, 5, 0, 100);
+		Unit temp3 = new Unit("임종현", 1, 100, 20, 5, 0, 100);
+		Unit temp4 = new Unit("joker", 1, 100, 20, 5, 0, 100);
 		guildList.add(temp1);
 		guildList.add(temp2);
 		guildList.add(temp3);
@@ -44,6 +44,14 @@ public class Guild {
 			guildList.get(index++).setParty(true);
 			this.partyCount++;
 			
+		}
+		partyList = new Unit[4];
+		int n = 0;
+		for (int i = 0; i < this.partyCount; i++) {
+			if (guildList.get(i).getParty() == true) {
+				partyList[n] = guildList.get(i);
+				n += 1;
+			}
 		}
 
 	}
@@ -141,52 +149,62 @@ public class Guild {
 
 	public void printParty() {
 		System.out.println("================ [파티원] ===============");
-		for (int i = 0; i < PARTY_SIZE; i++) {
-			System.out.print("[" + (i + 1) + "번]");
-			System.out.print(" [이름 : " + partyList[i].getName() + "]");
-			System.out.print(" [레벨 : " + partyList[i].getLevel() + "]");
-			System.out.print(" [체력 : " + partyList[i].getHp());
-			System.out.println(" / " + partyList[i].getMaxHp() + "]");
-			System.out.print("[공격력 : " + partyList[i].getAtt() + "]");
-			System.out.print(" [방어력 : " + partyList[i].getDef() + "]");
-			System.out.println(" [파티중 : " + guildList.get(i).getParty() + "]");
-			System.out.println("");
+		for (int i = 0; i < 4; i++) {
+			
+				System.out.print("[" + (i + 1) + "번]");
+				System.out.print(" [이름 : " + partyList[i].getName() + "]");
+				System.out.print(" [레벨 : " + partyList[i].getLevel() + "]");
+				System.out.print(" [체력 : " + partyList[i].getHp());
+				System.out.println(" / " + partyList[i].getMaxHp() + "]");
+				System.out.print("[공격력 : " + partyList[i].getAtt() + "]");
+				System.out.print(" [방어력 : " + partyList[i].getDef() + "]");
+				System.out.println(" [파티중 : " + partyList[i].getParty() + "]");
+				System.out.println("");
+			
 		}
 		System.out.println("=====================================");
 	}
 
 	public void partyChange() {
-
-		printParty();
-		System.out.println("교체할 번호를 입력하세요 ");
-		int partyNum = MainGame.scan.nextInt();
-		printAllUnitStaus();
-		System.out.println("참가할 번호를 입력하세요 ");
-		int guildNum = MainGame.scan.nextInt();
-
-		partyList[partyNum - 1].setParty(false);
-		
-		guildList.get(guildNum - 1).setParty(true);
-		
-
-		System.out.println("====================================");
-		System.out.print("[이름 : " + partyList[partyNum - 1].getName() + "]");
-		System.out.print("에서 ");
-		System.out.print("[이름 : " + guildList.get(guildNum - 1).getName() + "]");
-		System.out.println("으로 교체 합니다. ");
-		System.out.println("====================================");
-
-		int n = 0;
-		for (int i = 0; i < guildList.size(); i++) {
-			if (guildList.get(i).getParty()) {
-				partyList[n] = guildList.get(i);
-				n += 1;
+		if(guildList.size() > 4) {
+			printParty();
+			System.out.println("교체할 번호를 입력하세요 ");
+			int partyNum = MainGame.scan.nextInt();
+			printAllUnitStaus();
+			System.out.println("참가할 번호를 입력하세요 ");
+			int guildNum = MainGame.scan.nextInt();
+			System.out.println(guildList.get(guildNum-1).getParty());
+			if(!guildList.get(guildNum-1).getParty()) {
+			partyList[partyNum - 1].setParty(false);
+			
+			guildList.get(guildNum - 1).setParty(true);
+			
+			
+			System.out.println("====================================");
+			System.out.print("[이름 : " + partyList[partyNum - 1].getName() + "]");
+			System.out.print("에서 ");
+			System.out.print("[이름 : " + guildList.get(guildNum - 1).getName() + "]");
+			System.out.println("으로 교체 합니다. ");
+			System.out.println("====================================");
+			partyList = new Unit[4];
+			int n = 0;
+			for (int i = 0; i < guildList.size(); i++) {
+				if (guildList.get(i).getParty()) {
+					partyList[n] = guildList.get(i);
+					n += 1;
+				}
 			}
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			}else{
+			System.out.println(guildList.get(guildNum-1).getName()+"님은 이미 파티 중입니다.");
+			}
+			
+		}else {
+			System.out.println("교체할 파티인원이 없습니다.");
 		}
 	}
 
@@ -214,15 +232,8 @@ public class Guild {
 								+ this.guildList.get(i).getName());
 					}
 				}
-				partyList = new Unit[4];
-				int n = 0;
-				for (int i = 0; i < this.partyCount; i++) {
-					if (guildList.get(i).getParty() == true) {
-						partyList[n] = guildList.get(i);
-						n += 1;
-					}
-				}
-				System.out.println("asdasdasd: "+partyList.length);
+				
+				
 			} else {
 				System.out.println("유닛 번호를 다시 확인하세요.");
 			}
@@ -263,13 +274,13 @@ public class Guild {
 	}
 
 	private void partySort() {
-		String temp = "";
+		Unit temp;
 		for (int i = 0; i < this.guildList.size(); i++) {
 			for (int j = 0; j < this.guildList.size(); j++) {
 				if (this.guildList.get(i).getName().compareTo(this.guildList.get(j).getName()) < 0) {
-					temp = this.guildList.get(i).getName();
-					this.guildList.get(i).setName(this.guildList.get(j).getName());
-					this.guildList.get(j).setName(temp);
+					temp = this.guildList.get(i);
+					this.guildList.set(i,  this.guildList.get(j));
+					this.guildList.set(j, temp);
 				}
 			}
 		}
